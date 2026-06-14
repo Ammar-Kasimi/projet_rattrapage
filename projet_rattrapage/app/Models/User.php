@@ -17,11 +17,18 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+
+    public function participations()
+    {
+        return $this->belongsToMany(Event::class, 'participations')->withTimestamps();
+    }
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    'username',
+    'email',
+    'password',
+    'pic',
+    'role'
+];
 
     /**
      * The attributes that should be hidden for serialization.
