@@ -3,9 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\SoftDeletes;;
 class Event extends Model
 {
+    use SoftDeletes;
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -20,10 +21,12 @@ class Event extends Model
     }
     protected $fillable = [
     'title',
-    'description',
+    'desc',
     'date',
-    'location',
+    'max_volunteers',
+    "address_id",
     'user_id',
+    'category_id',
     'picture'
-    ]
+    ];
 }

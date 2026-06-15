@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username');
-            $table->string('email')->unique();
+            $table->string('email',40)->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->enum('role', ['admin', 'volunteer'])->nullable();
+            $table->enum('role', ['admin', 'volunteer'])->default('admin')->nullable();
             $table->string('password');
             $table->string('pic')->nullable();
             $table->rememberToken();
@@ -24,13 +24,13 @@ return new class extends Migration
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
+            $table->string('email',40)->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('id',40)->primary();
             $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();

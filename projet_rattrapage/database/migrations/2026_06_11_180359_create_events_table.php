@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('picture')->nullable();
             $table->foreignId('category_id')->constrained();
             $table->foreignId('address_id')->constrained();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
