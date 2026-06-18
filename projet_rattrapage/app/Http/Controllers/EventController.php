@@ -14,11 +14,8 @@ class EventController extends Controller
 {
     public function index()
     {
-        $events = Event::with(['address', 'category'])->withCount('volunteers')->get();
-        if (Auth::user()->role === 'admin') {
-            $categories = Category::all();
-            return view('admin.dashboard', compact('events', 'categories'));
-        }
+        $events = Event::with(['address', 'category'])->withCount('volunteers')->orderBy('date', 'asc')->get();
+            
         return view('events.index', compact('events'));
     }
     public function create()
@@ -57,5 +54,11 @@ class EventController extends Controller
         $event->delete();
 
         return redirect()->route('events.index');
+    }
+    public function dashboard()
+    {
+        $events = Event::with('category')->withCount('volunteers')->get();
+        $categories = Category::all();
+        return view('admin.dashboard', compact('events', 'categories'));
     }
 }

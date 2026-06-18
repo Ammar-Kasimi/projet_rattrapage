@@ -29,4 +29,6 @@ class Event extends Model
     'category_id',
     'picture'
     ];
+    protected $casts=['date'=>'date'];
+   
 }

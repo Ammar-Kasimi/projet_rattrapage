@@ -1,16 +1,21 @@
+@extends('layouts.header')
+
+@section('content')
 <div class="flex items-center justify-center min-h-screen bg-gray-100">
     <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
         
         <h2 class="mb-6 text-2xl font-bold text-center text-gray-800">Créer un compte</h2>
+        
         @if ($errors->any())
-    <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
-        <ul class="list-disc pl-5">
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+            <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <form action="{{ route('register') }}" method="POST">
             @csrf
 
@@ -49,3 +54,4 @@
 
     </div>
 </div>
+@endsection

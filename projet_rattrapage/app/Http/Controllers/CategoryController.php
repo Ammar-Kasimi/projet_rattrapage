@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller
 {
     public function store(CategoryRequest $request)
-    {   
+    {
         Category::create($request->validated());
         return redirect()->route('events.index');
     }
@@ -28,6 +28,11 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        $defaultCategory = Category::firstOrCreate(
+            ['name' => 'Generale'],
+            ['desc' => 'Catégorie par défaut pour les événements']
+        );
+        $category->events()->update(['category_id' => $defaultCategory->id]);
         $category->delete();
         return redirect()->route('events.index');
     }

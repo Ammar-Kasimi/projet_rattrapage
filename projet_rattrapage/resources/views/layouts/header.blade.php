@@ -12,21 +12,38 @@
     <nav class="bg-white shadow-md">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             
-            <a href="{{ route('events.index') }}" class="text-xl font-bold text-blue-600">
+            <a href="{{ route('events.index') }}" class="text-xl font-bold text-blue-600 shrink-0">
                 BénévolatHub
             </a>
 
-            <div>
+            <div class="hidden md:flex items-center space-x-6 mx-6">
+                <a href="{{ route('events.index') }}" class="text-gray-600 hover:text-blue-600 font-medium transition">
+                    Événements
+                </a>
+
                 @auth
-                    <span class="text-gray-600 mr-4">Bonjour, {{ Auth::user()->name }}</span>
+                    @if(Auth::user()->role === 'volunteer')
+                        <a href="{{ route('participations.index') }}" class="text-gray-600 hover:text-blue-600 font-medium flex items-center gap-1 transition">
+                            📅 Mon Planning
+                        </a>
+                    @endif
+
+                    @if(Auth::user()->role === 'admin')
+                        @endif
+                @endauth
+            </div>
+
+            <div class="flex items-center">
+                @auth
+                    <span class="text-gray-600 mr-4 text-sm hidden sm:inline">Bonjour, {{ Auth::user()->name }}</span>
                     
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" class="text-red-600 hover:underline font-medium">Déconnexion</button>
+                        <button type="submit" class="text-red-600 hover:underline font-medium transition">Déconnexion</button>
                     </form>
                 @else
-                    <a href="{{ route('login') }}" class="text-blue-600 hover:underline mr-4 font-medium">Connexion</a>
-                    <a href="{{ route('register') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium">S'inscrire</a>
+                    <a href="{{ route('login') }}" class="text-blue-600 hover:underline mr-4 font-medium transition">Connexion</a>
+                    <a href="{{ route('register') }}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 font-medium transition">S'inscrire</a>
                 @endauth
             </div>
         </div>
@@ -35,8 +52,6 @@
     <main class="flex-grow">
         @yield('content')
     </main>
-
-    
 
 </body>
 </html>
