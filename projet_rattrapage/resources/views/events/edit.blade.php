@@ -8,6 +8,10 @@
         <a href="{{ route('events.index') }}" class="text-gray-600 hover:text-blue-600">&larr; Retour</a>
     </div>
 
+    <div id="js-errors" class="hidden p-4 mb-6 text-red-700 bg-red-100 border-l-4 border-red-500 rounded">
+        <ul id="error-list" class="pl-5 list-disc"></ul>
+    </div>
+
     @if ($errors->any())
         <div class="p-4 mb-6 text-red-700 bg-red-100 border-l-4 border-red-500 rounded">
             <ul class="pl-5 list-disc">
@@ -18,9 +22,11 @@
         </div>
     @endif
 
-    <form action="{{ route('events.update', $event) }}" method="POST" class="p-8 bg-white rounded-lg shadow-md">
+    <form action="{{ route('events.update', $event) }}" method="POST" id="editEventForm" enctype="multipart/form-data" class="p-8 bg-white rounded-lg shadow-md">
         @csrf
-        @method('PUT') <h2 class="pb-2 mb-4 text-xl font-bold text-blue-600 border-b">1. Informations de l'événement</h2>
+        @method('PUT') 
+        
+        <h2 class="pb-2 mb-4 text-xl font-bold text-blue-600 border-b">1. Informations de l'événement</h2>
         
         <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-2">
             
@@ -43,18 +49,31 @@
 
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-700">Date</label>
-                <input type="date" name="date" value="{{ $event->date }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <input type="date" name="date" id="date" value="{{ \Carbon\Carbon::parse($event->date)->format('Y-m-d') }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
             </div>
 
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-700">Nombre max de bénévoles</label>
-                <input type="number" name="max_volunteers" value="{{ $event->max_volunteers }}" min="1" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <input type="number" name="max_volunteers" id="max_volunteers" value="{{ $event->max_volunteers }}" min="1" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
             </div>
         </div>
 
         <div class="mb-8">
             <label class="block mb-2 text-sm font-medium text-gray-700">Description</label>
             <textarea name="desc" rows="4" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">{{ $event->desc }}</textarea>
+        </div>
+
+        <div class="mb-8">
+            <label class="block mb-2 text-sm font-medium text-gray-700">Photo de l'événement (Optionnelle)</label>
+            
+            @if($event->picture)
+                <div class="mb-4">
+                    <span class="block mb-1 text-sm text-gray-500">Image actuelle :</span>
+                    <img src="{{ asset('storage/' . $event->picture) }}"  class="object-cover h-32 rounded-lg border border-gray-200">
+                </div>
+            @endif
+
+            <input type="file" name="picture" id="picture" accept="image/*" class="w-full px-4 py-2 bg-white border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
         </div>
 
         <h2 class="pb-2 mb-4 text-xl font-bold text-green-600 border-b">2. Localisation</h2>
@@ -68,17 +87,17 @@
 
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-700">Ville</label>
-                <input type="text" name="city" value="{{ $event->address->city ?? '' }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
+                <input type="text" name="city" id="ville" value="{{ $event->address->city ?? '' }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
             </div>
 
             <div>
                 <label class="block mb-2 text-sm font-medium text-gray-700">Code Postal</label>
-                <input type="text" name="postal_code" value="{{ $event->address->postal_code ?? '' }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
+                <input type="text" name="postal_code" id="postal_code" value="{{ $event->address->postal_code ?? '' }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
             </div>
 
             <div class="md:col-span-2">
                 <label class="block mb-2 text-sm font-medium text-gray-700">Pays</label>
-                <input type="text" name="country" value="{{ $event->address->country ?? 'Maroc' }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
+                <input type="text" name="country" id="pays" value="{{ $event->address->country ?? 'Maroc' }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500">
             </div>
         </div>
 
@@ -90,4 +109,6 @@
 
     </form>
 </div>
+
+@vite(['resources/js/form_validations.js'])
 @endsection

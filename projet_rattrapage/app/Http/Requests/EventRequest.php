@@ -27,7 +27,7 @@ class EventRequest extends FormRequest
             'desc'           => 'required|string',
             'date'           => 'required|date',
             'max_volunteers' => 'required|integer|min:1',
-            'picture'        => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'picture'        => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'category_id'    => 'required|exists:categories,id',
 
             'location'       => 'required|string|max:255',
