@@ -18,8 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', ['admin', 'volunteer'])->default('volunteer')->nullable();
             $table->enum('gender', ['male', 'female'])->nullable();
-            $table->integer('age');
-            $table->string('password');
+            $table->integer('age')->nullable();
+            $table->string('password')->nullable();
             $table->string('pic')->nullable();
             $table->rememberToken();
             $table->timestamps();

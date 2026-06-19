@@ -35,10 +35,13 @@
 
             <div class="flex items-center">
                 @auth
-                    <span class="text-gray-600 mr-4 text-sm hidden sm:inline">Bonjour, {{ Auth::user()->name }}</span>
+                    <a href="{{ route('users.edit',Auth::user()) }}" class="text-gray-600 hover:text-blue-600 mr-4 text-sm font-medium flex items-center gap-1 transition">
+                        👤 {{ Auth::user()->username }}
+                    </a>
                     
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
+                        @method('POST')
                         <button type="submit" class="text-red-600 hover:underline font-medium transition">Déconnexion</button>
                     </form>
                 @else

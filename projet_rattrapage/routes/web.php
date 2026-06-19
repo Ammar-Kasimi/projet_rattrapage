@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ParticipationController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,12 +25,14 @@ Route::middleware('auth')->group(function () {
     Route::post('/events/{event}/participate', [ParticipationController::class, 'store'])->name('participations.store');
     Route::delete('/events/{event}/participate', [ParticipationController::class, 'destroy'])->name('participations.destroy');
     Route::get('/mes-evenements', [ParticipationController::class, 'index'])->name('participations.index');
-
+    Route::put('/users/password/reset', [UserController::class, 'resetPassword'])->name('users.password.update');
+    Route::resource('users', UserController::class)->except(['index', 'create', 'store']);
+    
     Route::middleware('admin')->group(function () {
         Route::get('/admin/dashboard', [EventController::class, 'dashboard'])->name('admin.dashboard');
-        
+
         Route::get('events/create', [EventController::class, 'create'])->name('events.create');
-        
+
         Route::resource('events', EventController::class)->except(['index', 'show', 'create']);
         Route::resource('categories', CategoryController::class)->except(['create', 'show']);
     });

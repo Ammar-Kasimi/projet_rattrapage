@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -16,7 +22,7 @@ class UserController extends Controller
         return view('users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $validated=$request->validated();
         if ($request->hasFile('pic')) {
@@ -26,4 +32,13 @@ class UserController extends Controller
             $picPath = $request->file('pic')->store('users', 'public');
             $validated['pic'] = $picPath;
         }
+        $user->update($validated);
+        return redirect()->back()->with('success', 'Vos informations personnelles ont été modifiées avec succès !');
+    }
+    public function resetPassword(ResetPasswordRequest $request){
+        $validated=$request->validated();
+        Auth::user()->update($validated);
+        return redirect()->back()->with('success', 'Votre mot de passe a été mis à jour avec succès !');
+
+    }
 }
