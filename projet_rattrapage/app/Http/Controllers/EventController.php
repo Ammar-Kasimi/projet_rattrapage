@@ -7,6 +7,7 @@ use App\Http\Requests\EventRequest;
 use App\Models\Address;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Participation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -69,7 +70,7 @@ class EventController extends Controller
             $picturePath = $request->file('picture')->store('events', 'public');
             $validated['picture'] = $picturePath;
         }
-        
+
         $event->address->update($validated);
         $event->update($validated);
         // return redirect()->route('events.index');
@@ -85,10 +86,24 @@ class EventController extends Controller
         // return redirect()->route('events.index');
         return redirect()->route('admin.dashboard');
     }
-    public function dashboard()
+    public function dashboard(Request $request)
     {
-        $events = Event::with('category')->withCount('volunteers')->get();
+        // $events = Event::with('category')->withCount('volunteers')->get();
         $categories = Category::all();
-        return view('admin.dashboard', compact('events', 'categories'));
+        $totalEvents = Event::count();
+        // $totalVolunteers = Event::withCount('volunteers')->get()->sum('volunteers_count');
+        $totalVolunteers = Participation::count();
+        $query = Event::with(['address', 'category'])->withCount('volunteers');
+
+        if ($request->filled('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
+        if ($request->filled('month')) {
+            $year = date('Y', strtotime($request->month));
+            $month = date('m', strtotime($request->month));
+            $query->whereYear('date', $year)->whereMonth('date', $month);
+        }
+        $events = $query->orderBy('date', 'asc')->get();
+        return view('admin.dashboard', compact('events', 'categories', 'totalEvents', 'totalVolunteers'));
     }
 }

@@ -29,14 +29,23 @@
                     @endif
 
                     @if(Auth::user()->role === 'admin')
-                        @endif
+                        <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-blue-600 font-medium flex items-center gap-1 transition">
+                            ⚙️ Tableau de Bord
+                        </a>
+                    @endif
                 @endauth
             </div>
 
             <div class="flex items-center">
                 @auth
-                    <a href="{{ route('users.edit',Auth::user()) }}" class="text-gray-600 hover:text-blue-600 mr-4 text-sm font-medium flex items-center gap-1 transition">
-                        👤 {{ Auth::user()->username }}
+                    <a href="{{ route('users.edit', Auth::user()) }}" class="text-gray-600 hover:text-blue-600 mr-4 text-sm font-medium flex items-center gap-2 transition">
+                        @if(Auth::user()->pic)
+                            <img src="{{ asset('storage/' . Auth::user()->pic) }}" alt="Avatar" class="w-8 h-8 rounded-full object-cover border border-gray-200">
+                        @else
+                            <span class="text-lg">👤</span>
+                        @endif
+                        
+                        {{ Auth::user()->username }}
                     </a>
                     
                     <form action="{{ route('logout') }}" method="POST" class="inline">

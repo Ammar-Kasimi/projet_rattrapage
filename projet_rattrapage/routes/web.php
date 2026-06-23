@@ -2,14 +2,26 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\ParticipationController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get(
+    '/',
+    function () {
+        if (Auth::check()) {
+            return Auth::user()->role === 'admin'
+                ? redirect()->route('admin.dashboard')
+                : redirect()->route('events.index');
+        } else {
+            return view('welcome');
+        }
+    }
+
+)->name('home');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -27,14 +39,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/mes-evenements', [ParticipationController::class, 'index'])->name('participations.index');
     Route::put('/users/password/reset', [UserController::class, 'resetPassword'])->name('users.password.update');
     Route::resource('users', UserController::class)->except(['index', 'create', 'store']);
-    
-    Route::middleware('admin')->group(function () {
-        Route::get('/admin/dashboard', [EventController::class, 'dashboard'])->name('admin.dashboard');
 
+    Route::middleware('admin')->group(function () {
+        Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])->name('admin.dashboard');
         Route::get('events/create', [EventController::class, 'create'])->name('events.create');
 
         Route::resource('events', EventController::class)->except(['index', 'show', 'create']);
-        Route::resource('categories', CategoryController::class)->except(['create', 'show']);
+        Route::resource('categories', CategoryController::class)->except(['create', 'index', 'show']);
     });
 });
 

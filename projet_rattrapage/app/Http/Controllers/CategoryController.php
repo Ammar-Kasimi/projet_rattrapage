@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         Category::create($request->validated());
-        return redirect()->route('events.index');
+        return redirect()->route('admin.dashboard');
     }
 
     public function edit(Category $category)
@@ -20,10 +21,10 @@ class CategoryController extends Controller
         return view('categories.edit', compact('category'));
     }
 
-    public function update(CategoryRequest $request, Category $category)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         $category->update($request->validated());
-        return redirect()->route('events.index');
+        return redirect()->route('admin.dashboard');
     }
 
     public function destroy(Category $category)

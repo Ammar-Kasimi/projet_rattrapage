@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 let age = document.getElementById('age').value;
-                if (age < 1 && age!='') {
+                if (age < 1 && age != '') {
                     errors.push("L'âge doit être supérieur ou égal à 1.");
                 }
 
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 let email = document.getElementById('login_email').value;
                 let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                
+
                 if (!emailRegex.test(email)) {
                     errors.push("Veuillez entrer une adresse email valide.");
                 }
@@ -158,6 +158,59 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
         }
+
+        let categoryForm = document.getElementById('categoryForm');
+
+        if (categoryForm) {
+            categoryForm.addEventListener('submit', function (event) {
+                document.getElementById('js-errors').classList.add('hidden');
+                let errors = [];
+
+                let nameInput = document.getElementById('category_name').value.trim();
+                let descInput = document.getElementById('category_desc').value.trim();
+                if (nameInput == '') {
+                    errors.push("Le nom de la catégorie est requis.");
+                } else if (nameInput.length > 45) {
+                    errors.push("Le nom de la catégorie ne peut pas dépasser 45 caractères.");
+                }
+                if (descInput !== '' && descInput.length < 3) {
+                    errors.push("La description doit contenir au moins 3 caractères si elle est renseignée.");
+                }
+
+                if (errors.length > 0) {
+                    event.preventDefault();
+                    showErrors(errors);
+                }
+            });
+        }
+
+        let editCategoryForm = document.getElementById('editCategoryForm');
+
+        if (editCategoryForm) {
+            editCategoryForm.addEventListener('submit', function (event) {
+                document.getElementById('js-errors').classList.add('hidden');
+                let errors = [];
+
+                let nameInput = document.getElementById('edit_category_name').value.trim();
+                let descInput = document.getElementById('edit_category_desc').value.trim();
+
+                if (nameInput === '') {
+                    errors.push("Le nom de la catégorie est requis.");
+                } else if (nameInput.length > 45) {
+                    errors.push("Le nom de la catégorie ne peut pas dépasser 45 caractères.");
+                }
+
+                if (descInput !== '' && descInput.length < 3) {
+                    errors.push("La description doit contenir au moins 3 caractères si elle est renseignée.");
+                }
+
+                if (errors.length > 0) {
+                    event.preventDefault();
+                    showErrors(errors);
+                }
+            });
+        }
+
 
         function showErrors(errorsArray) {
             document.getElementById('error-list').innerHTML = '';

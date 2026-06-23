@@ -22,8 +22,9 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+        $cat=$this->route('category');
         return [
-          'name'=>'required|string|max:45',
+          'name'=>'required|string|max:45|unique:categories,name,'.$cat->name,
           'desc'=>'nullable|string'
         ];
     }
