@@ -5,7 +5,7 @@
 
     <div class="flex items-center justify-between mb-6">
         <h1 class="text-3xl font-bold text-gray-800">Mon Profil</h1>
-        <a href="{{ Auth::user()->role=='admin' ?route('admin.dashboard') : route('events.index') }}" class="text-gray-600 hover:text-blue-600">&larr; Retour à l'accueil</a>
+        <a href="{{ Auth::user()->role=='admin' ? route('admin.dashboard') : route('events.index') }}" class="text-gray-600 hover:text-blue-600">&larr; Retour à l'accueil</a>
     </div>
 
     @if(session('success'))
@@ -24,10 +24,14 @@
         </div>
     @endif
 
+    <div id="js-errors" class="hidden p-4 mb-6 text-red-700 bg-red-100 border-l-4 border-red-500 rounded">
+        <ul id="error-list" class="pl-5 list-disc"></ul>
+    </div>
+
     <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
         
         <div class="md:col-span-2">
-            <form action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data" class="p-8 bg-white rounded-lg shadow-md">
+            <form id="editProfileForm" action="{{ route('users.update', $user) }}" method="POST" enctype="multipart/form-data" class="p-8 bg-white rounded-lg shadow-md">
                 @csrf
                 @method('PUT') 
                 
@@ -36,22 +40,22 @@
                 <div class="grid grid-cols-1 gap-6 mb-6 md:grid-cols-2">
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Nom d'utilisateur</label>
-                        <input type="text" name="username" value="{{ old('username', $user->username) }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="username" id="username" value="{{ old('username', $user->username) }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                     </div>
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Adresse Email</label>
-                        <input type="email" name="email" value="{{ old('email', $user->email) }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                     </div>
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Âge</label>
-                        <input type="number" name="age" value="{{ old('age', $user->age) }}" min="1"  class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <input type="number" name="age" id="age" value="{{ old('age', $user->age) }}" min="1"  class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                     </div>
 
                     <div>
                         <label class="block mb-2 text-sm font-medium text-gray-700">Genre</label>
-                        <select name="gender" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        <select name="gender" id="gender" class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
                             <option value="" disabled {{ is_null($user->gender) ? 'selected' : '' }}>Choisir...</option>
                             <option value="male" {{ old('gender', $user->gender) == 'male' ? 'selected' : '' }}>Homme</option>
                             <option value="female" {{ old('gender', $user->gender) == 'female' ? 'selected' : '' }}>Femme</option>
@@ -81,7 +85,7 @@
         </div>
 
         <div class="md:col-span-1">
-            <form action="{{ route('users.password.update') }}" method="POST" class="p-8 bg-white rounded-lg shadow-md">
+            <form id="editPasswordForm" action="{{ route('users.password.update') }}" method="POST" class="p-8 bg-white rounded-lg shadow-md">
                 @csrf
                 @method('PUT')
                 
@@ -89,12 +93,12 @@
                 
                 <div class="mb-4">
                     <label class="block mb-2 text-sm font-medium text-gray-700">Nouveau mot de passe</label>
-                    <input type="password" name="password" required class="w-full px-4 py-2 border rounded-lg focus:ring-red-500 focus:border-red-500" placeholder="Minimum 8 caractères">
+                    <input type="password" name="password" id="password" required class="w-full px-4 py-2 border rounded-lg focus:ring-red-500 focus:border-red-500" placeholder="Minimum 8 caractères">
                 </div>
 
                 <div class="mb-8">
                     <label class="block mb-2 text-sm font-medium text-gray-700">Confirmer le mot de passe</label>
-                    <input type="password" name="password_confirmation" required class="w-full px-4 py-2 border rounded-lg focus:ring-red-500 focus:border-red-500">
+                    <input type="password" name="password_confirmation" id="password_confirmation" required class="w-full px-4 py-2 border rounded-lg focus:ring-red-500 focus:border-red-500">
                 </div>
 
                 <div class="flex justify-end">

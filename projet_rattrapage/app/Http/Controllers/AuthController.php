@@ -10,13 +10,20 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function register(RegisterRequest $req)
-    {
-        $creds = $req->validated();
-        $user = User::create($creds);
-        Auth::login($user);
-        return redirect()->route("events.index");
+   public function register(RegisterRequest $req)
+{
+    $creds = $req->validated();
+
+    if ($req->hasFile('pic')) {
+        $creds['pic'] = $req->file('pic')->store('users', 'public');
+    } else {
+        unset($creds['pic']);
     }
+
+    $user = User::create($creds);
+    Auth::login($user);
+    return redirect()->route("events.index");
+}
     public function login(LoginRequest $req)
     {
         $creds = $req->validated();

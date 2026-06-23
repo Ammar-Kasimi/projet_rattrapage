@@ -24,8 +24,8 @@ class CategoryRequest extends FormRequest
     {
 
         return [
-            'name' => 'required|string|max:190',
-            'desc' => 'required|string'
+            'name' => 'required|string|max:45',
+            'desc' => 'nullable|string|min:3'
         ];
     }
 }
