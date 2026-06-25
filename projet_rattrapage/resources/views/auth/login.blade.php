@@ -1,13 +1,21 @@
 @extends('layouts.header')
 
 @section('content')
-<div class="flex items-center justify-center min-h-screen bg-gray-100">
-    <div class="w-full max-w-md p-8 bg-white rounded-lg shadow-md">
-        
-        <h2 class="mb-6 text-2xl font-bold text-center text-gray-800">Connexion</h2>
+<div class="flex items-center justify-center min-h-screen bg-stone-50 px-4">
+    <div class="w-full max-w-md p-8 bg-white rounded-2xl shadow-md border border-stone-100">
+
+        <div class="flex justify-center mb-4">
+            <div class="flex h-12 w-12 items-center justify-center rounded-full bg-teal-50 text-teal-700">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm0 0c-3.314 0-6 1.79-6 4v1h12v-1c0-2.21-2.686-4-6-4z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <h2 class="mb-6 font-display text-2xl font-semibold text-center text-stone-800">Connexion</h2>
 
         @if ($errors->any())
-            <div class="p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+            <div class="p-4 mb-4 text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl">
                 <ul class="list-disc pl-5">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -16,7 +24,7 @@
             </div>
         @endif
 
-        <div id="js-errors" class="hidden p-4 mb-4 text-red-700 bg-red-100 rounded-lg">
+        <div id="js-errors" class="hidden p-4 mb-4 text-sm text-rose-700 bg-rose-50 border border-rose-200 rounded-xl">
             <ul id="error-list" class="pl-5 list-disc"></ul>
         </div>
 
@@ -24,24 +32,24 @@
             @csrf
 
             <div class="mb-4">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Adresse Email</label>
-                <input type="email" name="email" id="login_email" required 
-                       class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <label class="block mb-2 text-sm font-medium text-stone-700">Adresse Email</label>
+                <input type="email" name="email" id="login_email" required
+                       class="w-full px-4 py-2.5 border border-stone-300 rounded-lg text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 transition">
             </div>
 
             <div class="mb-6">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Mot de passe</label>
-                <input type="password" name="password" id="login_password" required 
-                       class="w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                <label class="block mb-2 text-sm font-medium text-stone-700">Mot de passe</label>
+                <input type="password" name="password" id="login_password" required
+                       class="w-full px-4 py-2.5 border border-stone-300 rounded-lg text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 transition">
             </div>
 
-            <button type="submit" class="w-full px-4 py-2 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700">
+            <button type="submit" class="w-full px-4 py-2.5 font-semibold text-white bg-teal-700 rounded-lg shadow-sm hover:bg-teal-800 transition">
                 Se Connecter
             </button>
         </form>
 
-        <p class="mt-4 text-sm text-center text-gray-600">
-            Pas encore de compte ? <a href="{{ route('register') }}" class="text-blue-600 hover:underline">S'inscrire</a>
+        <p class="mt-4 text-sm text-center text-stone-600">
+            Pas encore de compte ? <a href="{{ route('register') }}" class="text-teal-700 font-medium hover:underline">S'inscrire</a>
         </p>
 
     </div>

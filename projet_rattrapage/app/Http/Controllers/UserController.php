@@ -40,7 +40,7 @@ class UserController extends Controller
         return redirect()->back()->with('success', 'Vos informations personnelles ont été modifiées avec succès !');
     }
     public function resetPassword(ResetPasswordRequest $request){
-        $this->authorize('update', $user);
+        
         $validated=$request->validated();
         Auth::user()->update($validated);
         return redirect()->back()->with('success', 'Votre mot de passe a été mis à jour avec succès !');

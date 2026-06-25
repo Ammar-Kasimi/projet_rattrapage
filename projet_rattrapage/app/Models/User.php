@@ -28,7 +28,8 @@ class User extends Authenticatable
     'password',
     'pic',
     'gender',
-    'age'
+    'age',
+    'role'
     
 ];
 

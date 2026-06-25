@@ -19,7 +19,7 @@ class AuthController extends Controller
         } else {
             unset($creds['pic']);
         }
-
+            $creds['role'] = User::count() == 0 ? 'admin' : 'volunteer';
         $user = User::create($creds);
         Auth::login($user);
         return $user->role == 'admin' ?
